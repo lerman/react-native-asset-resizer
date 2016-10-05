@@ -26,7 +26,11 @@ Temporary Items
 
 ### Xcode ###
 #
+## Build generated
 build/
+DerivedData/
+
+## Various settings
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -35,14 +39,12 @@ build/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-xcuserdata
-*.xccheckout
+xcuserdata/
+
+## Other
 *.moved-aside
-DerivedData
-*.hmap
-*.ipa
-*.xcuserstate
-project.xcworkspace
+*.xccheckout
+*.xcscmblueprint
 
 # Except this file (so we can add empty dirs)
 ######################
