@@ -1,0 +1,23 @@
+{
+  "name": "react-native-asset-resizer",
+  "version": "0.0.1",
+  "description": "Native module for resizing ios cameraroll photos with asset uri",
+  "main": "RNAssetResizer.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lerman/react-native-asset-resizer.git"
+  },
+  "keywords": [
+    "react-native",
+    "ios",
+    "resizer",
+    "asset",
+    "image"
+  ],
+  "author": "Jeff Lerman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lerman/react-native-asset-resizer/issues"
+  },
+  "homepage": "https://github.com/lerman/react-native-asset-resizer#readme"
+}
