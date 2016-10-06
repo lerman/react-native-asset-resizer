@@ -11,6 +11,8 @@
 @implementation RNAssetResizer
 
 -(UIImage *)resizeImage :(UIImage *)theImage :(CGSize)theNewSize {
+    // keep scale at 1.0 since we are not using this for display
+    // can assets ever come in with scale greater than 1.0??
     UIGraphicsBeginImageContextWithOptions(theNewSize, NO, 1.0);
     [theImage drawInRect:CGRectMake(0, 0, theNewSize.width, theNewSize.height)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -27,7 +29,6 @@
             NSDictionary *metadata = (__bridge NSDictionary *)imageProperties;
             CFRelease(imageProperties);
             CFRelease(imageSource);
-            NSLog(@"Metadata of selected image%@",metadata);// It will display the metadata of image after converting NSData into NSDictionary
             return metadata;
 
         }
@@ -97,22 +98,19 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
              [mutableMetadata setValue:orgFilename forKey:@"originalUri"];
          }
 
-
          UIImage *newImage = [UIImage imageWithData:imageData];
 
-
-         // TODO FIXME: change this to figure out based on max width/height scale
+         // TODO: add option to figure out based on max width/height scale
          UIImage *scaledImage = [self resizeImage:newImage :newSize];
 
-         NSLog(@"Got newImage w[%f] h[%f] s[%f] thisO[%ld], origO[%ld]", newImage.size.width, newImage.size.height, newImage.scale, (long)newImage.imageOrientation,(long)orientation);
+         //NSLog(@"Got newImage w[%f] h[%f] s[%f] thisO[%ld], origO[%ld]", newImage.size.width, newImage.size.height, newImage.scale, (long)newImage.imageOrientation,(long)orientation);
 
-         NSLog(@"Got scaledImage w[%f] h[%f] s[%f] thisO[%ld], origO[%ld]", scaledImage.size.width, scaledImage.size.height, scaledImage.scale, (long)scaledImage.imageOrientation,(long)orientation);
+         //NSLog(@"Got scaledImage w[%f] h[%f] s[%f] thisO[%ld], origO[%ld]", scaledImage.size.width, scaledImage.size.height, scaledImage.scale, (long)scaledImage.imageOrientation,(long)orientation);
 
-         // set the quality
+         // set the quality to 75%
          [mutableMetadata setObject:@(.75) forKey:(__bridge NSString *)kCGImageDestinationLossyCompressionQuality];
 
-         NSLog(@"Hi");
-         NSLog( @"%@", mutableMetadata );
+         //NSLog( @"%@", mutableMetadata );
 
          // Create an image destination.
          CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:fullPath], kUTTypeJPEG , 1, NULL);

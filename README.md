@@ -1,6 +1,11 @@
 # react-native-asset-resizer
 Native module for resizing images with asset uri while attempting to keep metadata (IOS Only)
 
+Caveats:
+This is meant to be used on images to be uploaded to server, therefore we keep scale at 1.0
+Will only accept a hardcoded width/height. In the future a maxWidth/maxHeight option may be available
+Converts all images to jpegs with 75% quality. In the future the quality value will be configurable. 
+
 ## Installation
 
 1. `npm install react-native-asset-resizer --save`
@@ -39,7 +44,7 @@ class MyComponent extends Component {
   someMethod() {
     const uploadDir = _getUploadDir();
 
-    RNAssetResizer.resizeAsset(imageUri, 1080, 868, this._uploadDir)
+    RNAssetResizer.resizeAsset(imageUri, 1080, 868, this._getUploadDir)
       .then ((filePath) => {
         console.log("File Path: " + filePath);
         return;
