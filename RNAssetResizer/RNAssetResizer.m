@@ -110,7 +110,15 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
          // set the quality to 75%
          [mutableMetadata setObject:@(.75) forKey:(__bridge NSString *)kCGImageDestinationLossyCompressionQuality];
 
-         //NSLog( @"%@", mutableMetadata );
+         // reset orientation to UP(1) since we did redraw
+         [mutableMetadata setObject:[NSNumber numberWithInt:1] forKey:@"Orientation"];
+
+         // also need to reset TIFF orientation to 1
+         NSMutableDictionary *tiffMetadata = [mutableMetadata objectForKey:(NSString *)kCGImagePropertyTIFFDictionary];
+         [tiffMetadata setObject:[NSNumber numberWithInt:1] forKey:(NSString*)kCGImagePropertyTIFFOrientation];
+         [mutableMetadata setObject:tiffMetadata forKey:(NSString*)kCGImagePropertyTIFFDictionary];
+
+         //NSLog( @"METADATA: %@", mutableMetadata );
 
          // Create an image destination.
          CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:fullPath], kUTTypeJPEG , 1, NULL);

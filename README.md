@@ -4,7 +4,8 @@ Native module for resizing images with asset uri while attempting to keep metada
 Caveats:
 This is meant to be used on images to be uploaded to server, therefore we keep scale at 1.0
 Will only accept a hardcoded width/height. In the future a maxWidth/maxHeight option may be available
-Converts all images to jpegs with 75% quality. In the future the quality value will be configurable. 
+Converts all images to jpegs with 75% quality. In the future the quality value will be configurable.
+Orientation values are stripped since drawInRect draws the image as it should be
 
 ## Installation
 
