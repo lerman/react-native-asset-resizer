@@ -93,10 +93,16 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
 
          if (metadata != nil) {
              mutableMetadata = [metadata mutableCopy];
-             NSArray *resources = [PHAssetResource assetResourcesForAsset:_asset];
-             NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
-             [mutableMetadata setValue:orgFilename forKey:@"originalUri"];
          }
+         else {
+             mutableMetadata = [[NSMutableDictionary alloc] init];
+         }
+
+         NSArray *resources = [PHAssetResource assetResourcesForAsset:_asset];
+         NSString *orgFilename = ((PHAssetResource*)resources[0]).originalFilename;
+         [mutableMetadata setValue:orgFilename forKey:@"originalUri"];
+
+         //mutableMetadata
 
          UIImage *newImage = [UIImage imageWithData:imageData];
 
@@ -115,8 +121,11 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
 
          // also need to reset TIFF orientation to 1
          NSMutableDictionary *tiffMetadata = [mutableMetadata objectForKey:(NSString *)kCGImagePropertyTIFFDictionary];
-         [tiffMetadata setObject:[NSNumber numberWithInt:1] forKey:(NSString*)kCGImagePropertyTIFFOrientation];
-         [mutableMetadata setObject:tiffMetadata forKey:(NSString*)kCGImagePropertyTIFFDictionary];
+
+         if (tiffMetadata != nil) {
+             [tiffMetadata setObject:[NSNumber numberWithInt:1] forKey:(NSString*)kCGImagePropertyTIFFOrientation];
+             [mutableMetadata setObject:tiffMetadata forKey:(NSString*)kCGImagePropertyTIFFDictionary];
+         }
 
          //NSLog( @"METADATA: %@", mutableMetadata );
 
@@ -133,6 +142,8 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
          CGImageDestinationAddImage(imageDestination, scaledImage.CGImage, (__bridge CFDictionaryRef)mutableMetadata);
 
          BOOL finalized = CGImageDestinationFinalize(imageDestination);
+         tiffMetadata = nil;
+         mutableMetadata = nil;
 
          // Finalize the destination.
          if (finalized == NO) {
