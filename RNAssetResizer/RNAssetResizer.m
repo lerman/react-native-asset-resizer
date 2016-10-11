@@ -72,7 +72,8 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
     PHAsset *_asset = [[PHAsset fetchAssetsWithALAssetURLs:@[assetPath] options:nil] firstObject];
 
     if (!_asset) {
-        reject(@"Error", nil, nil);
+        reject(@"Error", @"Cannot find asset", nil);
+        return;
     }
 
     // get photo info from this asset
@@ -135,7 +136,8 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
          if (imageDestination == NULL ) {
              // Handle failure.
              NSLog(@"Error -> failed to create image destination.");
-             reject(@"Error", nil, nil);
+             reject(@"Error", @"Cannot create image destination", nil);
+             return;
          }
 
          // Add your image to the destination.
@@ -156,7 +158,7 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
          if(finalized) {
              resolve(fullPath);
          } else {
-             reject(@"Error", nil, nil);
+             reject(@"Error", @"Could not finalize file", nil);
          }
      }];
 }
