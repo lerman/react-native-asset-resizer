@@ -1,6 +1,6 @@
 {
   "name": "react-native-asset-resizer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Native module for resizing ios cameraroll photos with asset uri",
   "main": "RNAssetResizer.js",
   "repository": {
