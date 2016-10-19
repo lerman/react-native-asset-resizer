@@ -93,6 +93,7 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
     PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
 
     requestOptions.synchronous = YES;
+    requestOptions.networkAccessAllowed = YES;
 
     [[PHImageManager defaultManager]
      requestImageDataForAsset:_asset
