@@ -46,7 +46,8 @@
     if ([outputPath length] == 0) {
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         directory = [paths firstObject];
-    } else {
+    }
+    else {
         directory = outputPath;
     }
 
@@ -66,15 +67,27 @@ RCT_EXPORT_METHOD(resizeAsset:(NSURL *)assetPath
                   resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
+    NSString *assetID = @"";
+    PHAsset *_asset;
 
-    CGSize newSize = CGSizeMake(width, height);
-    NSString* fullPath = [self generateFilePath:outputPath ext:@"jpg"];
-    PHAsset *_asset = [[PHAsset fetchAssetsWithALAssetURLs:@[assetPath] options:nil] firstObject];
+    if ([assetPath.scheme caseInsensitiveCompare:@"ph"] == NSOrderedSame) {
+        assetID = [assetPath.absoluteString substringFromIndex:@"ph://".length];
+        _asset = [[PHAsset fetchAssetsWithLocalIdentifiers:@[assetID] options:nil] firstObject];
+
+    }
+    else if ([assetPath.scheme caseInsensitiveCompare:@"assets-library"] == NSOrderedSame) {
+         assetID = [assetPath absoluteString];
+        _asset = [[PHAsset fetchAssetsWithALAssetURLs:@[assetPath] options:nil] firstObject];
+    }
+
 
     if (!_asset) {
         reject(@"Error", @"Cannot find asset", nil);
         return;
     }
+
+    CGSize newSize = CGSizeMake(width, height);
+    NSString* fullPath = [self generateFilePath:outputPath ext:@"jpg"];
 
     // get photo info from this asset
     PHImageRequestOptions *requestOptions = [[PHImageRequestOptions alloc] init];
